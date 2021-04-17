@@ -1,0 +1,87 @@
+#headerAddBook{
+    text-align: center;
+    font-size: 30px;
+    font-style: italic;
+    letter-spacing: 2px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+#button {
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    border: none;
+  } 
+  #button:active {
+    transform: translateY(4px);
+  }
+  .table td, .table th{
+    padding: 10px;
+}
+.modal-body{
+  padding-top: 5px;
+}
+/* set css input file  */
+/* .divs {
+  position: relative;
+  display: inline-block;
+  background-color: #fcc;
+} */
+
+/* .inputs {
+  position:absolute;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  background: #00f;
+  z-index:999;
+}
+
+.icons {
+  position:relative;
+} */
+/* .inputs::-webkit-file-upload-button {
+  color: white;
+  display: inline-block;
+  background: #1CB6E0;
+  border: none;
+  padding: 5px 13px;
+  font-weight: 680;
+  border-radius: 7px;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 9pt;
+} */
+
+#file {
+  padding: 5px;
+  background: gainsboro;
+  display: table;
+  color: black;
+  border-radius: 3px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  text-align: center;
+  -webkit-transition: all 0.4s ease; transition: all 0.4s ease;
+}
+#file:hover {
+    color: red;
+    font-style: italic;
+    -webkit-transform:scale(1.1); transform:scale(1.1);
+}
+input[type="file"] {
+  display: none;
+}
+
+.fade-c {
+  transform: scale(0);
+  opacity: 0;
+  -webkit-transition: all .25 linear;
+  -o-transition: all .25 linear;
+  transition: all .25 linear;
+}
+
+.fade-c.in {
+  opacity: 1;
+  transform: scale(1);
+}

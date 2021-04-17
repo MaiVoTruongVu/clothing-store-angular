@@ -1,0 +1,104 @@
+<div class="card border-danger">
+  <div class="card-header table-primary">
+    <span id="headerAddBook">Thống Kê Doanh Thu</span>
+  </div>
+  <div class="card-body">
+    <div class="my-2 mb-3 mr-0">
+      <div class="row">
+        <div class="col-8">
+          <div class="row">
+            <div class="col-3">
+              <div class="form-group  mb-0">
+                <h6>Từ ngày<span class="text-danger">
+                    *</span></h6>
+                <input type="date" placeholder="Từ ngày" [(ngModel)]="startDate" class="form-control py-0">
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Đến ngày<span class="text-danger">
+                    *</span></h6>
+                <input type="date" placeholder="Đến ngày" [(ngModel)]="endDate" class="form-control py-0">
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Khách hàng<span class="text-danger">
+                    *</span></h6>
+                <input type="text" placeholder="Nhập tên khách hàng..." (keyup.enter)="satisticByDate()"
+                  [(ngModel)]="firstName" class="form-control py-0">
+              </div>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-warning mt-4" id="button" (click)="satisticByDate()"><i
+                  class="fa fa-search"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 py-0 mb-0">
+          <button class="btn btn-warning float-right mt-4" id="button" (click)="dateNow()">Ngày hiện tại</button>
+        </div>
+      </div>
+    </div>
+    <table class="table text-center table-hover table-md table-bordered">
+      <thead class="table-primary text-center py-1">
+        <tr>
+          <th>No.</th>
+          <th> <a href="" (click)="sortName($event)" style="color: black; text-decoration: none;">
+              <div *ngIf="!changeCus">
+                <i class="fa fa-sort-alpha-asc mb-1"></i> Tên khách hàng
+              </div>
+              <div *ngIf="changeCus">
+                <i class="fa fa-sort-alpha-desc mb-1"></i> Tên khách hàng
+              </div>
+            </a></th>
+          <th>Ngày mua</th>
+          <th>Hình sản phẩm</th>
+          <th>Tên sản phẩm</th>
+          <th>Loại mặt hàng</th>
+          <th>
+            <a href="" (click)="sortQuantity($event)" style="color: black; text-decoration: none;">
+              <div *ngIf="!change">
+                <i class="fa fa-sort-numeric-asc mb-1"></i> Số lượng
+              </div>
+              <div *ngIf="change">
+                <i class="fa fa-sort-numeric-desc mb-1"></i> Số lượng
+              </div>
+            </a>
+          </th>
+          <th>
+            <a href="" (click)="sortPrice($event)" style="color: black; text-decoration: none;">
+              <div *ngIf="!changePrice">
+                <i class="fa fa-sort-numeric-asc mb-1"></i> Giá
+              </div>
+              <div *ngIf="changePrice">
+                <i class="fa fa-sort-numeric-desc mb-1"></i> Giá
+              </div>
+            </a>
+          </th>
+          <th>Thành tiền</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of details; let i = index;">
+          <th>{{i+1}}</th>
+          <td>{{row.bill.customer.lastName}} {{row.bill.customer.firstName}}</td>
+          <td>{{row.bill.createdDate | date:'dd/MM/yyyy h:mm a z'}}</td>
+          <td>
+            <img src="{{row.product.avatar}}" width="70" height="90" style="border-radius: 10px;" />
+          </td>
+          <td>{{row.product.name}}</td>
+          <td>{{row.product.type.name}}</td>
+          <td style="text-align: right;">{{row.quantity}}</td>
+          <td style="text-align: right;">{{row.price | number}} Đ</td>
+          <td style="text-align: right;">{{row.quantity * row.price | number}} VNĐ</td>
+        </tr>
+        <tr>
+          <th colspan="6">TỔNG CỘNG : </th>
+          <th style="text-align: right;">{{sumQuantity}}</th>
+          <th colspan="2" style="text-align: right;">{{totalPrice | number}} VNĐ</th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,461 @@
+<div class="card border-danger">
+  <div class="card-header table-primary">
+    <span id="headerAddBook">Danh Sách Sản Phẩm</span>
+  </div>
+  <div class="card-body">
+    <div class="my-2 mb-3 mr-0">
+      <div class="row">
+        <div class="col-3">
+          <input type="text" maxlength="100" autocomplete="off" class="form-control border border-warning" name="code"
+            [(ngModel)]="code" (keyup)="searchCode()" (keyup.enter)="searchCode()" placeholder="Tìm kiếm mã sản phẩm..">
+        </div>
+        <div class="col-9">
+          <button class="btn btn-warning float-right" (click)="showEditModal($event ,0)" id="button"><i
+              class="fa fa-plus-circle"></i> Thêm mới</button>
+        </div>
+      </div>
+    </div>
+    <table class="table text-center table-hover">
+      <thead class="table-primary text-center py-1">
+        <tr>
+          <th>No.</th>
+          <th>Ảnh Bìa</th>
+          <th>Mã</th>
+          <th>Tên</th>
+          <th id="loai">
+            <select class="w-100 custom-select-sm text-center font-weight-bold" id="type" [(ngModel)]="searchTypeId"
+              name="searchTypeId" (change)="getFilter()">
+              <option (click)="loadingProduct()">Tất cả</option>
+              <option *ngFor="let row of types;" value="{{row.id}}">{{row.name}}</option>
+            </select>
+          </th>
+          <th id="nsx">
+            Nhà sản xuất
+          </th>
+          <th>
+            <a href="" (click)="sortPrice($event)" style="color: black; text-decoration: none;">
+              <div *ngIf="!changePrice">
+                <i class="fa fa-sort-numeric-asc mb-1"></i> Giá
+              </div>
+              <div *ngIf="changePrice">
+                <i class="fa fa-sort-numeric-desc mb-1"></i> Giá
+              </div>
+            </a>
+          </th>
+          <th>Giới tính</th>
+          <th>Size</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="text-center"
+          *ngFor="let row of products | paginate: { itemsPerPage: count, currentPage: p}; index as i">
+          <th>{{count * (p - 1) + i + 1}}</th>
+          <td>
+            <img src="{{row.avatar}}" width="70" height="90" style="border-radius: 10px;" />
+          </td>
+          <td style="text-align: left;">{{row.code}}</td>
+          <td style="text-align: left;">{{row.name}}</td>
+          <td style="text-align: left;">{{row.type.name}}</td>
+          <td style="text-align: left;">{{row.producer.name}}</td>
+          <td style="text-align: right;">{{row.price | number}} Đ</td>
+          <div *ngIf="row.gender == 'Nu'">
+            <td style="text-align: left;">Nữ</td>
+          </div>
+          <div *ngIf="row.gender == 'Nam'">
+            <td style="text-align: left;">Nam</td>
+          </div>
+          <td style="text-align: left;">{{row.size.name}}</td>
+          <td class="text-center">
+            <a href="" class="text-success pr-1" (click)="showEditModal($event, row.id)" title="Chỉnh sửa"><i
+                class="fa fa-edit"></i></a>
+            <a href="" class="text-danger" (click)="delete($event, row.id)" title="Xóa"><i class="fa fa-trash"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="text-right">
+      <pagination-controls previousLabel="" class="my-pagination" nextLabel="" (pageChange)="p = $event">
+      </pagination-controls>
+    </div>
+  </div>
+</div>
+
+<!-- bootstrap model -->
+<div bsModal #editModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-child-name">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-child-name" class="modal-title text-center">Thêm Sản Phẩm</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideEditModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="frm">
+
+          <div class="row mb-3 border-aqua border-2 bold" style="font-size: 20px;">
+            <div class="col-xl-2 border-right" style="font-weight: 600; color: lightslategray; font-family: cursive;">
+              Ảnh Đại Diện</div>
+            <div class="col-xl-5 border-right" style="font-weight: 600; color: lightslategray; font-family: cursive;">
+              Thông Tin Cơ Bản</div>
+            <div class="col-xl-5 border-right" style="font-weight: 600; color: lightslategray; font-family: cursive;">
+              Thông Tin Giao Dịch</div>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <div class="form-row my-1" *ngIf="imgURL === ''">
+                <img [src]="imgURL" alt="" style="border-radius: 5px;">
+              </div>
+              <div class="form-row my-1" *ngIf="imgURL !== ''">
+                <img [src]="imgURL" alt="" style="border-radius: 5px; width: 150px; height: 200px;">
+              </div>
+              <div class="form-row mt-2">
+                <label id="file" class="col-7"> <i class="fa fa-file-image-o"></i> Chọn ảnh..
+                  <input type="file" class="form-control-file inputs" #fileUpload id="fileUpload"
+                    (change)="preview(fileUpload)" name="fileUpload" accept="image/*" maxlength="150">
+                </label>
+              </div>
+            </div>
+
+            <div class="col-5">
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group row">
+                    <label for="code" class="col-3 text-right bold">Mã s.phẩm <span class="text-danger">
+                        *</span></label>
+                    <div class="col-9">
+                      <input type="text" maxlength="50" class="form-control" [(ngModel)]="anProduct.code"
+                        formControlName="code" [ngClass]="{'is-invalid' : frm.controls['code'].invalid && frm.controls['code'].touched,
+                                    'is-valid' : frm.controls['code'].valid }" placeholder="Nhập mã sản phẩm">
+                      <div *ngIf="frm.controls['code'].errors?.required" class="invalid-feedback">
+                        Vui lòng nhập mã sản phẩm
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group row">
+                    <label for="name" class="col-3 text-right bold">Tên s.phẩm <span class="text-danger">
+                        *</span></label>
+                    <div class="col-9">
+                      <input type="text" maxlength="100" class="form-control" [(ngModel)]="anProduct.name"
+                        formControlName="name" [ngClass]="{'is-invalid' : frm.controls['name'].invalid && frm.controls['name'].touched,
+                                    'is-valid' : frm.controls['name'].valid }" placeholder="Nhập tên sản phẩm">
+                      <div *ngIf="frm.controls['name'].errors?.required" class="invalid-feedback">
+                        Vui lòng nhập mã sản phẩm
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group row">
+                    <label for="color" class="col-3 text-right bold">Màu <span class="text-danger">
+                        *</span></label>
+                    <div class="input-group col-9">
+
+                      <select class="custom-select" id="color" [style.background-color]="getColor()"
+                        [(ngModel)]="anProduct.color.id" [ngModelOptions]="{standalone: true}" name="color">
+                        <option id="color" *ngFor="let row of colors;" [ngValue]="row.id"
+                          [style.background-color]="row.name">
+
+                        </option>
+                      </select>
+                      <div class="input-group-prepend">
+                        <button class="btn btn-secondary plus" (click)="showColorModal()" type="button"><i
+                            class="fa fa-plus" id="pm"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group row">
+                    <label for="size" class="col-3 text-right bold">Size <span class="text-danger">
+                        *</span></label>
+                    <div class="input-group col-9">
+                      <select class="custom-select" id="size" [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="anProduct.size.id" name="size">
+                        <option *ngFor="let row of sizes;" [ngValue]="row.id">{{row.name}}</option>
+
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-7">
+                  <div class="form-group row">
+                    <label for="type" class="col-5 text-right">Giới tính <span class="text-danger">
+                        *</span></label>
+                    <div class="input-group col-7 text-right">
+                      <div class="form-check form-check-inline col-5">
+                        <input class="form-check-input" type="radio" formControlName="gender"
+                          [(ngModel)]="anProduct.gender" [ngClass]="{'is-invalid' : frm.controls['gender'].invalid && frm.controls['gender'].touched,
+                        'is-valid' : frm.controls['gender'].valid }" value="Nam">
+                        <label class="form-check-label mr-3" for="inlineRadio1">Nam</label>
+
+                        <input class="form-check-input" type="radio" formControlName="gender"
+                          [(ngModel)]="anProduct.gender" [ngClass]="{'is-invalid' : frm.controls['gender'].invalid && frm.controls['gender'].touched,
+                        'is-valid' : frm.controls['gender'].valid }" value="Nu">
+                        <label class="form-check-label " for="inlineRadio2">Nữ</label>
+                      </div>
+                      <div *ngIf="frm.controls['gender'].errors?.required" class="invalid-feedback">
+                        Vui lòng chọn giới tính !
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group row">
+                    <label for="type" class="col-3 text-right bold">Bán chạy </label>
+                    <div class="input-group col-9">
+                      <div class="form-check form-check-inline col-5">
+                        <input class="form-check-input" type="checkbox" [ngModelOptions]="{standalone: true}"
+                          name="isHot" [(ngModel)]="anProduct.isHot" value="1">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-5">
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group row">
+                    <label for="producer" class="col-3 text-right">Nhà s.xuất <span class="text-danger">
+                        *</span></label>
+                    <div class="input-group col-9">
+                      <select class="custom-select" id="producer" [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="anProduct.producer.id" name="producer">
+                        <option *ngFor="let row of producers;" [ngValue]="row.id">{{row.name}}</option>
+                      </select>
+                      <div class="input-group-prepend">
+                        <button class="btn btn-secondary plus" (click)="showProducerModal()" type="button"><i id="pm"
+                            class="fa fa-plus"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group row">
+                    <label for="type" class="col-3 text-right bold">Loại <span class="text-danger">
+                        *</span></label>
+                    <div class="input-group col-9">
+
+                      <!-- <input list="brow"> -->
+                      <select class="custom-select" [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="anProduct.type.id" name="type">
+                        <input type="text" placeholder="Search.." id="myInput">
+                        <!-- dùng vòng lặp ngFor duyệt cái mảng vừa khởi tạo bên typescript-->
+                        <!-- với từng phần tử row thì in tên type ra qua lệnh  {{row.name}}-->
+                        <option *ngFor="let row of types;" [ngValue]="row.id">{{row.name}}</option>
+                      </select>
+
+                      <div class="input-group-prepend">
+                        <!-- bắt sự kiện khi người dùng click chuột -->
+                        <!-- showTypeModal là phương thức xổ modal xuống nằm trong ts -->
+                        <button class="btn btn-secondary plus" (click)="showTypeModal()" type="button"><i
+                            class="fa fa-plus" id="pm"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group row">
+                    <label for="price" class="col-3 text-right">Giá bán <span class="text-danger">
+                        *</span></label>
+                    <div class="col-9">
+                      <input type="number" class="form-control" [(ngModel)]="anProduct.price" formControlName="price"
+                        [ngClass]="{'is-invalid' : frm.controls['price'].invalid && frm.controls['price'].touched,
+                      'is-valid' : frm.controls['price'].valid }" placeholder="1.000.000 VNĐ">
+                      <div *ngIf="frm.controls['price'].errors?.required" class="invalid-feedback">
+                        Vui lòng nhập giá sản phẩm
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group row">
+                    <label for="des" class="col-3 text-right">Ghi chú</label>
+                    <div class="col-9">
+                      <textarea name="description" [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="anProduct.description" maxlength="500" class="form-control" cols="42"
+                        rows="5"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- show image detail -->
+          <div class="row ml-2">
+            <div *ngFor="let imgURL of imgURLs; let index = index" class="card mx-1 ml-2 my-1"
+              style="border-radius: 5px;">
+              <div class="card-header header">
+                <button type="button" class="close float-right pl-5 col-2 buttonClose" aria-label="Close"
+                  (click)="closeImageIndex(index)">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <img [src]="imgURL" alt="" height="190" width="140">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <div class="form-row mt-2">
+                <label id="file" class="col-5"> <i class="fa fa-file-image-o"></i> Ảnh chi tiết..
+                  <input type="file" multiple class="form-control-file inputs" (change)="onSelectFile($event)"
+                    #filesUpload id="filesUpload" name="filesUpload" accept="image/*" maxlength="150">
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- end show image detail -->
+        </form>
+        <p class="float-right mr-2" style="font-size: 12px; font-weight: 400; color: black; font-style: italic;"><span
+            class="text-danger">*</span> không được phép bỏ trống.</p>
+      </div>
+      <div class="row mb-3 mr-1">
+        <div class="col-auto ml-auto">
+          <button type="submit" (click)="saveProduct()" [disabled]="frm.invalid" class="btn btn-success mr-2"
+            id="button">Lưu</button>
+          <button type="submit" class="btn btn-secondary" (click)="hideEditModal()" id="button">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal type -->
+<!-- gọi tên typeModal thông qua ViewChild bằng cách sử dụng lệnh dấu #tênModal -->
+<div bsModal #typeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-child-name">
+  <div class="modal-dialog">
+    <div class="modal-content" style="background-color: whitesmoke;">
+      <div class="modal-body py-1">
+        <div class="row mb-2">
+          <h4 id="dialog-child-name" class="modal-title pl-2 col-10">Thêm loại</h4>
+          <button type="button" class="close float-right pl-5 col-2" aria-label="Close" (click)="hideTypeModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form>
+          <div class="form-row mb-1">
+            <label class="text-center col-2">Tên loại<span class="text-danger">
+                *</span></label>
+            <input type="type" class="form-control col-10" name="name" autocomplete="off" [(ngModel)]="anType.name"
+              placeholder="Nhập loại bạn muốn thêm..." maxlength="50">
+          </div>
+        </form>
+        <p class="float-right mr-2" style="font-size: 12px; font-weight: 400; color: black; font-style: italic;"><span
+            class="text-danger">*</span> không được phép bỏ trống.</p>
+      </div>
+      <div class="row mb-2 mr-1">
+        <div class="col-auto ml-auto">
+          <button type="submit" (click)="saveType()" class="btn btn-success mr-2" id="button">Lưu</button>
+          <button type="submit" class="btn btn-secondary" (click)="hideTypeModal()" id="button">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- bootstrap model -->
+<div bsModal #producerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="dialog-child-name">
+  <div class="modal-dialog">
+    <div class="modal-content" style="background-color: whitesmoke;">
+      <div class="modal-body py-1">
+        <div class="row mb-2">
+          <h4 id="dialog-child-name" class="modal-title pl-2 col-10">Thêm nhà sản xuất</h4>
+          <button type="button" class="close float-right pl-5 col-2" aria-label="Close" (click)="hideProducerModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form>
+          <div class="form-row mb-2">
+            <div class="col-12">
+              <label class="text-center">Tên Sản Xuất<span class="text-danger">
+                  *</span></label>
+              <input type="text" class="form-control" name="name" autocomplete="off" [(ngModel)]="anProducer.name"
+                placeholder="Nhập tên nhà sản xuất" maxlength="50">
+            </div>
+          </div>
+          <div class="form-row mb-2">
+            <div class="col-12">
+              <label class="text-center">Số điện thoại<span class="text-danger">
+                  *</span></label>
+              <input type="text" class="form-control" name="phone" autocomplete="off" [(ngModel)]="anProducer.phone"
+                placeholder="Nhập số điện thoại" maxlength="20">
+            </div>
+          </div>
+
+          <div class="form-row my-2">
+            <div class="col-12">
+              <label class="text-center">Địa chỉ </label>
+              <textarea rows="rows" maxlength="200" name="address" [(ngModel)]="anProducer.address" autocomplete="off"
+                class="form-control"></textarea>
+            </div>
+          </div>
+        </form>
+        <p class="float-right mr-2" style="font-size: 12px; font-weight: 400; color: black; font-style: italic;"><span
+            class="text-danger">*</span> không được phép bỏ trống.</p>
+      </div>
+      <div class="row mb-2 mr-1">
+        <div class="col-auto ml-auto">
+          <button type="submit" (click)="saveProducer()" class="btn btn-success mr-2" id="button">Lưu</button>
+          <button type="submit" class="btn btn-secondary" (click)="hideProducerModal()" id="button">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- bootstrap model -->
+<div bsModal #colorModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-child-name">
+  <div class="modal-dialog">
+    <div class="modal-content" style="background-color: whitesmoke;">
+      <div class="modal-body py-1">
+        <div class="row mb-2">
+          <h4 id="dialog-child-name" class="modal-title pl-2 col-10">Thêm màu</h4>
+          <button type="button" class="close float-right pl-5 col-2" aria-label="Close" (click)="hideColorModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form>
+          <div class="form-row mb-1">
+            <label class="text-center col-5">Chọn màu bạn muốn thêm <span class="text-danger">
+                *</span></label>
+            <input type="color" class="form-control col-6" name="name" value="anColor.name" height="120"
+              [(ngModel)]="anColor.name">
+          </div>
+        </form>
+        <p class="float-right mr-2" style="font-size: 12px; font-weight: 400; color: black; font-style: italic;"><span
+            class="text-danger">*</span> không được phép bỏ trống.</p>
+      </div>
+      <div class="row mb-2 mr-1">
+        <div class="col-auto ml-auto">
+          <button type="submit" (click)="saveColor()" class="btn btn-success mr-2" id="button">Lưu</button>
+          <button type="submit" class="btn btn-secondary" (click)="hideColorModal()" id="button">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

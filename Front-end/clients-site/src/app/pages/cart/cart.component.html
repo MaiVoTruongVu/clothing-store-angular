@@ -1,0 +1,111 @@
+	<!-- Page info -->
+	<div class="page-top-info">
+		<div class="container">
+			<h4>Giỏ Hàng</h4>
+			<div class="site-pagination">
+				<a id="header"  [routerLink]="['/home']">Trang Chủ</a> /
+				<a id="header"  [routerLink]="['/cart']">Giỏ Hàng</a>
+			</div>
+		</div>
+	</div>
+	<!-- Page info end -->
+
+<!-- cart section start -->
+<section class="cart-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="cart-table">
+                    <h3>Giỏ Hàng Của Bạn</h3>
+                    <div class="cart-table-warp">
+                        <table>
+                        <thead>
+                            <tr>
+                                <th class="product-th">Sản Phẩm</th>
+                                <th class="quy-th">Số Lượng</th>
+                                <th class="size-th">Kích Cỡ</th>
+                                <th class="total-th">Giá</th>
+                                <th class="total-th">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of temp;">
+                                <td class="product-col">
+                                    <img src="{{row.product.avatar}}" alt="">
+                                    <div class="pc-title">
+                                        <h4 style="width: 200px;">{{row.product.name}}</h4>
+                                        <p>Mã: {{row.product.code}}</p>
+                                    </div>
+                                </td>
+                                <td class="x">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <span class="dec qtybtn" (click)="minius(row.product.code)">-</span>
+                                            <input type="text" disabled value="{{row.quantity}}">
+                                            <span class="inc qtybtn" (click)="plus(row.product.code)">+</span>
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="size-col"><h4>{{row.product.size.name}}</h4></td>
+                                <td class="total-col"><h4>{{row.product.price | number}}</h4></td>
+                                <td class="total-col"><h4>{{row.quantity * row.product.price | number}} Đ</h4></td>
+                            </tr>
+                            <!-- <tr>
+                                <td class="product-col">
+                                    <img src="picture/10.2.jpg" alt="">
+                                    <div class="pc-title">
+                                        <h4>Đồ Bộ Thể Thao</h4>
+                                        <p>199.000Đ</p>
+                                    </div>
+                                </td>
+                                <td class="quy-col">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <span class="dec qtybtn" (click)="minius2()">-</span>
+                                            <input type="text" disabled value="{{quantity2}}">
+                                            <span class="inc qtybtn" (click)="plus2()">+</span>
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="size-col"><h4> M</h4></td>
+                                <td class="total-col"><h4>{{price2 | number}} Đ</h4></td>
+                                <td class="total-col"><h4>{{sumPrice2 | number}} Đ</h4></td>
+                            </tr> -->
+                            <!-- <tr>
+                                <td class="product-col">
+                                    <img src="picture/2.4.jpg" alt="">
+                                    <div class="pc-title">
+                                        <h4>Quần Jeans Dài</h4>
+                                        <p>250.000Đ</p>
+                                    </div>
+                                </td>
+                                <td class="quy-col">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <span class="dec qtybtn">-</span>
+                                                <input type="text" value="1">
+                                            <span class="inc qtybtn">+</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="size-col"><h4> M</h4></td>
+                                <td class="total-col"><h4>250.000Đ</h4></td>
+                            </tr> -->
+                        </tbody>
+                    </table>
+                    </div>
+                    <div class="total-cost">
+                        <h6>Tổng Cộng <span>{{totalPrice | number}} Đ</span></h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 card-right">
+                <a [routerLink]="['/checkout']" class="site-btn">Đặt Hàng</a>
+                <a class="site-btn sb-dark" [routerLink]="['/product']">Tiếp Tục Mua Sắm</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- cart section end -->

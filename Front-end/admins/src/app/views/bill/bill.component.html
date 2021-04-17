@@ -1,0 +1,195 @@
+<div class="card border-danger">
+  <div class="card-header table-primary">
+    <span id="headerAddBook">Danh Sách Hóa Đơn</span>
+  </div>
+  <div class="card-body">
+    <div class="my-2 mb-3 mr-0">
+      <div class="row">
+        <div class="col-8">
+           <div class="row">
+            <div class="col-3">
+              <div class="form-group  mb-0">
+                <h6>Từ ngày<span class="text-danger">
+                  *</span></h6>
+                <input type="date" placeholder="Từ ngày" [(ngModel)]="startDate" class="form-control py-0">
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Đến ngày<span class="text-danger">
+                  *</span></h6>
+                <input type="date" placeholder="Đến ngày" [(ngModel)]="endDate" class="form-control py-0">
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <h6>Khách hàng<span class="text-danger">
+                  *</span></h6>
+                <input type="text" placeholder="Nhập tên khách hàng..." (keyup.enter)="getBillDate()" [(ngModel)]="firstName" class="form-control py-0">
+              </div>
+            </div>
+            <div class="col-3">
+              <button class="btn btn-warning mt-4" id="button" (click)="getBillDate()"><i
+                  class="fa fa-search"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 py-0 mb-0">
+          <button class="btn btn-warning float-right mt-4" id="button" (click)="dateNow()">Hóa đơn hôm nay</button>
+        </div>
+      </div>
+    </div>
+    <table class="table text-center table-hover table-md table-bordered">
+      <thead class="table-primary text-center py-1">
+        <tr>
+          <th>No.</th>
+          <th>Mã hóa đơn</th>
+          <th>Ngày xuất hóa đơn</th>
+          <th>Địa chỉ giao hàng</th>
+          <th>
+            <a href="" (click)="sortName($event)" style="color: black; text-decoration: none;">
+              <div *ngIf="!change">
+                <i class="fa fa-sort-alpha-asc mb-1"></i> Tên khách hàng
+              </div>
+              <div *ngIf="change">
+                <i class="fa fa-sort-alpha-desc mb-1"></i> Tên khách hàng
+              </div>
+            </a>
+          </th>
+          <th>Số điện thoại</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="text-center" *ngFor="let row of bills; let i = index;">
+          <th (click)="showDetailModal($event, row.id)">{{i+1}}</th>
+          <!-- <div *ngIf="row.isCheck"> -->
+            <td (click)="showDetailModal($event, row.id)">{{row.code}}</td>
+            <td (click)="showDetailModal($event, row.id)">{{row.createdDate  | date:'dd/MM/yyyy h:mm a z'}}</td>
+            <td id="address" (click)="showDetailModal($event, row.id)">{{row.deliveryAddress}}</td>
+            <td (click)="showDetailModal($event, row.id)">{{row.customer.lastName}} {{row.customer.firstName}}</td>
+            <td (click)="showDetailModal($event, row.id)">{{row.customer.phone}}</td>
+          <!-- </div> -->
+          <!-- <div *ngIf="!row.isCheck">
+            <th (click)="showDetailModal($event, row.id)">{{row.code}}</th>
+            <th (click)="showDetailModal($event, row.id)">{{row.createdDate  | date:'dd/MM/yyyy h:mm a z'}}</th>
+            <th id="address" (click)="showDetailModal($event, row.id)">{{row.deliveryAddress}}</th>
+            <th (click)="showDetailModal($event, row.id)">{{row.customer.lastName}} {{row.customer.firstName}}</th>
+            <th (click)="showDetailModal($event, row.id)">{{row.customer.phone}}</th>
+          </div> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- bootstrap model -->
+<div bsModal #detailModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-child-name">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="container">
+        <div class="row mt-1">
+          <div class="col-12">
+            <button type="button" class="close mr-auto" aria-label="Close" (click)="hideDetailModal()">
+              <span aria-hidden="true" class="">&times;</span>
+            </button>
+          </div>
+
+        </div>
+        <div class="row mt-1">
+          <div class="col-5">
+            <img class="float-right" src="./assets/img/logo/logo2.png" width="100" height="100">
+          </div>
+          <div class="col-6 pl-0">
+            <label><span
+                style="font-size: 24px; font-weight: bold; letter-spacing: 1px; font-style: italic; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">QUẦN
+                ÁO
+                THREE MEN</span> <br>
+              &nbsp;&nbsp;&nbsp;Điện thoại Hotline: 1900 106 850 <br>
+              &nbsp;&nbsp;&nbsp;Website: threemenshopping@gmail.com <br>
+              &nbsp;&nbsp;&nbsp;Địa chỉ: Lô 14 Đường số 5 Công viên phần mềm <br> &nbsp;&nbsp;&nbsp;Quang Trung Quận 12
+              Thành Phố Hồ Chí Minh</label>
+            <br>
+          </div>
+        </div>
+        <hr width="300">
+        <div class="row mt-2">
+          <div class="col-3"></div>
+          <div class="col-6 pr-0">
+            <h1 class="pl-4" style="text-align: center; font-weight: bold;
+               letter-spacing: 2px; font-style: italic;
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+              HÓA ĐƠN CHI TIẾT</h1>
+          </div>
+          <div class="col-3 pl-0">
+            <label style="font-size: 15px;" class="pt-3 float-right mr-3" *ngFor="let row of details; first as isFirst"><span
+                *ngIf="isFirst">Mã: <span class="text-danger font-weight-bold">{{row.bill.code}}</span></span></label>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12">
+            <label *ngFor="let row of details; first as isFirst"><span *ngIf="isFirst">Họ tên khách hàng:
+                {{row.bill.customer.lastName}} {{row.bill.customer.firstName}}</span></label>
+          </div>
+          <div class="col-7">
+            <label *ngFor="let row of details; first as isFirst"><span *ngIf="isFirst">Điện thoại:
+              {{row.bill.customer.phone}}</span></label>
+          </div>
+          <div class="col-5">
+            <label class="float-right mr-3" *ngFor="let row of details; first as isFirst"><span *ngIf="isFirst">Thời gian:
+              {{row.bill.createdDate | date:'dd/MM/yyyy hh:mma'}}</span></label>
+          </div>
+          <div class="col-12">
+            <label *ngFor="let row of details; first as isFirst"><span *ngIf="isFirst">Địa chỉ giao:
+                {{row.bill.deliveryAddress}}</span></label>
+          </div>
+        
+        </div>
+          <table class="table text-center table-hover table-bordered"  id="table-1">
+            <thead class=" text-center py-1 head">
+              <tr>
+                <th>No.</th>
+                <!-- <div>No.</div> -->
+                <th>Hình ảnh</th>
+                <!-- <div>Hình ảnh</div> -->
+                <th>Tên sản phẩm</th>
+                <!-- <div>Tên sản phẩm</div> -->
+                <th>Mã sản phẩm</th>
+                <!-- <div>Mã sản phẩm</div> -->
+                <th>Size</th>
+                <!-- <div>Size</div> -->
+                <th>Đơn giá</th>
+                <!-- <div>Đơn giá</div> -->
+                <th>SL</th>
+                <!-- <div>SL</div> -->
+                <th>Thành tiền</th>
+                <!-- <div>Thành tiền</div> -->
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr class="text-center" *ngFor="let row of details | paginate: {
+                itemsPerPage: count,
+                 currentPage: page}; index as i">
+                <th style="padding-top: 40px; padding-right: 7px;">{{i+1}}</th>
+                <td>
+                  <img src="{{row.product.avatar}}" height="90" width="70" />
+                </td>
+                <td style="padding-top: 37px; text-align: left;">{{row.product.name}}</td>
+                <td style="padding-top: 37px; text-align: left;">{{row.product.code}}</td>
+                <td style="padding-top: 37px; text-align: left;">{{row.product.size.name}}</td>
+                <td style="padding-top: 37px; text-align: right;">{{row.product.price | number}} Đ</td>
+                <td style="padding-top: 37px; text-align: right;">{{row.quantity}}</td>
+                <td style="padding-top: 37px; text-align: right;">{{row.quantity * row.product.price | number}} Đ</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="text-center">
+                <td colspan="5" style="font-style: italic;">TỔNG CỘNG:</td>
+                <td colspan="3" style="text-align: right;">{{totalPrice | number}} VNĐ</td>
+              </tr>
+            </tfoot>
+          </table>
+      </div>
+    </div>
+  </div>
+</div>

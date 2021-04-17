@@ -1,0 +1,131 @@
+<div class="card border-danger">
+  <div class="card-header table-primary">
+    <span id="headerAddBook">Danh Sách Ảnh Bìa</span>
+  </div>
+  <div class="card-body">
+    <div class="my-2 mb-3 mr-0">
+      <div class="row">
+        <div class="col-6">
+          <!-- <form class="form-inline">
+              <div class="form-group row">
+                <div class="col-10">
+                  <input type="text" maxlength="100" autocomplete="off"
+                   class="form-control" name="search"
+                    placeholder="Tìm kiếm tên khách hàng">
+                </div>
+                <button class="btn btn-warning col-2" id="button"><i class="fa fa-search"></i></button>
+              </div>
+            </form> -->
+        </div>
+        <div class="col-6">
+          <button class="btn btn-warning float-right" (click)="showEditModal($event , 0)" id="button"><i
+              class="fa fa-plus-circle"></i> Thêm mới</button>
+        </div>
+      </div>
+    </div>
+    <table class="table text-center table-hover">
+      <thead class="table-primary text-center py-1">
+        <tr>
+          <th>No.</th>
+          <th>Hình đại diện</th>
+          <th>Tiêu đề</th>
+          <th>Nội dung</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of banners; let i = index" class="text-center">
+          <th>{{i+1}}</th>
+          <td>
+            <img style="height: 90px; width: 150px;" src="{{row.url}}" />
+          </td>
+          <td>{{row.title}}</td>
+          <td style="max-width: 230px;">{{row.content}}</td>
+          <td>
+            <a href="" (click)="showEditModal($event , row.id)" class="text-success pr-1" title="Chỉnh sửa"><i
+                class="fa fa-edit"></i></a>
+            <a href="" (click)="delete($event, row.id)" class="text-danger" title="Xóa"><i class="fa fa-trash"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- bootstrap model -->
+<div bsModal #editModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-child-name">
+  <div class="modal-dialog  modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-child-name" class="modal-title text-center">{{action}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideEditModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="frm">
+          <div class="row">
+            <div class="col-5">
+              <div class="form-row my-1" *ngIf="imgURL === ''">
+                <img [src]="imgURL" alt="" style="border-radius: 5px;">
+              </div>
+              <div class="form-row my-1" *ngIf="imgURL !== ''">
+                <img [src]="imgURL" alt="" style="border-radius: 5px; width: 250px; height: 180px;">
+              </div>
+              <div class="form-row mt-2">
+                <label id="file" class="col-4"> <i class="fa fa-file-image-o"></i> Chọn ảnh..
+                  <input type="file" class="form-control-file inputs" #fileUpload id="fileUpload"
+                    (change)="preview(fileUpload)"  name="fileUpload" accept="image/*" maxlength="150">
+                </label>
+                <!-- [ngModelOptions]="{standalone: true}" [(ngModel)]="anBanner.url" -->
+              </div>
+            </div>
+            <div class="col-7">
+              <div class="form-row mb-2">
+                <div class="col-12">
+                  <label class="text-center">Tiêu đề <span class="text-danger">
+                      *</span></label>
+                  <input type="text" maxlength="100" class="form-control" formControlName="title" autocomplete="off"
+                    [(ngModel)]="anBanner.title" placeholder="Nhập tiêu đề ảnh" [ngClass]="{'is-invalid' : frm.controls['title'].invalid && frm.controls['title'].touched,
+                       'is-valid' : frm.controls['title'].valid}">
+                  <div *ngIf="frm.controls['title'].errors?.required" class="invalid-feedback">
+                    Vui lòng nhập tiêu đề
+                  </div>
+                </div>
+              </div>
+              <div class="form-row mt-2">
+                <div class="col-12">
+                  <label class="text-center">Nội dung <span class="text-danger">
+                      *</span></label>
+                  <textarea rows="4" class="form-control" formControlName="content" autocomplete="off"
+                    [(ngModel)]="anBanner.content" maxlength="150" [ngClass]="{'is-invalid' : frm.controls['content'].invalid && frm.controls['content'].touched,
+                      'is-valid' : frm.controls['content'].valid}">
+                      </textarea>
+                  <div *ngIf="frm.controls['content'].errors?.required" class="invalid-feedback">
+                    Vui lòng nhập nội dung
+                  </div>
+                </div>
+              </div>
+              <!-- <app-input [label]="'Tiêu đề'" [(ngModel)]="anBanner.title" [placeholder]="'Nhập tiêu đề ảnh'"
+                [type]="'text'" [name]="'title'">
+              </app-input>
+              <app-textarea [label]="'Nội dung'" [rows]="'5'" [(ngModel)]="anBanner.content" [name]="'content'">
+              </app-textarea> -->
+            </div>
+          </div>
+        </form>
+        <p class="float-right mr-2" style="font-size: 12px; font-weight: 400; color: black; font-style: italic;"><span
+            class="text-danger">*</span> không được phép bỏ trống.</p>
+      </div>
+
+      <!-- <div class="modal-footer"> -->
+      <div class="row mb-3 mr-1">
+        <div class="col-auto ml-auto">
+          <button type="submit" (click)="save()" [disabled]="frm.invalid" class="btn btn-success mr-2" id="button">Lưu</button>
+          <button type="submit" class="btn btn-secondary" (click)="hideEditModal()" id="button">Đóng</button>
+        </div>
+      </div>
+
+      <!-- </div> -->
+    </div>
+  </div>
+</div>

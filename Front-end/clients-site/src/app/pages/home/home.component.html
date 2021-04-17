@@ -1,0 +1,90 @@
+<div class="body">
+  <carousel>
+    <slide *ngFor="let row of banners;">
+      <img src="{{row.url}}" alt="first slide" style="display: block; width: 100%; height: 750px;">
+      <!-- <div class="carousel-caption d-none d-md-block">
+            <h3>First slide label</h3>
+            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          </div> -->
+    </slide>
+  </carousel>
+  <!-- Features section -->
+  <section class="features-section">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-4 p-0 feature">
+          <div class="feature-inner">
+            <div class="feature-icon">
+              <i class="far fa-credit-card pt-2" style="font-size: 40px;"></i>
+            </div>
+            <h2>Thanh Toán Nhanh</h2>
+          </div>
+        </div>
+        <div class="col-md-4 p-0 feature">
+          <div class="feature-inner">
+            <div class="feature-icon">
+              <i class="fab fa-jedi-order pt-1 text-white" style="font-size: 45px;"></i>
+            </div>
+            <h2>Sản Phẩm Cao Cấp</h2>
+          </div>
+        </div>
+        <div class="col-md-4 p-0 feature">
+          <div class="feature-inner">
+            <div class="feature-icon">
+              <i class="fas fa-shipping-fast pt-1" style="font-size: 45px;"></i>
+            </div>
+            <h2>Giao Hàng Miễn Phí</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Features section end -->
+
+  <!-- Product filter section -->
+  <section class="product-filter-section mt-5">
+    <div class="container">
+      <div class="section-title">
+        <h2>SẢN PHẨM HOT NHẤT</h2>
+      </div>
+      <!-- <ul class="product-filter-menu">
+        <li><a href="#">HÀNG ĐẦU</a></li>
+        <li><a href="#">ÁO THUN</a></li>
+        <li><a href="#">DẦM</a></li>
+        <li><a href="#">JEANS</a></li>
+        <li><a href="#">GIÀY</a></li>
+        <li><a href="#">ÁO SƠ MI</a></li>
+        <li><a href="#">ÁO KHOÁT</a></li>
+      </ul> -->
+      <div class="row">
+        <div class="col-lg-3 col-sm-6" *ngFor="let row of productsIsHot;">
+          <div class="product-item">
+            <div class="pi-pic">
+              <img src="{{row.avatar}}" alt="" width="270" height="350">
+              <div class="pi-links mr-2">
+                <a class="add-card mr-1" (click)="addCart($event, row.code)">
+                  <i class="fa fa-cart-arrow-down"></i>
+                  <span>Thêm Vào
+                    Giỏ</span>
+                </a>
+                <a href="#" class="wishlist-btn"><i class="far fa-heart text-danger"></i></a>
+              </div>
+            </div>
+            <div class="pi-text">
+              <h6>{{row.price | number}} Đ</h6>
+              <a class="product-detail" [routerLink]="['/product-detail', row.id]">
+                <p id="name" style="font-size: 18px;">{{row.name}}</p>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="text-center pt-5">
+        <a href="" [routerLink]="'/product'" class="site-btn sb-line sb-dark">Nhiều Hơn</a>
+      </div>
+    </div>
+  </section>
+  <!-- Product filter section end -->
+
+</div>

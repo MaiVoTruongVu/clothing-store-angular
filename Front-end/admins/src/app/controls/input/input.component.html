@@ -1,0 +1,8 @@
+<div class="form-row mb-2">
+<div [ngClass]="ngClass">
+    <label class="text-center">{{label}}<span class="text-danger">
+            *</span></label>
+    <input [attr.type]="type" class="form-control" autocomplete="off" [(ngModel)]="ngModel"
+        [attr.placeholder]="placeholder" [attr.disabled]="disabled" maxlength="50">
+</div>
+</div>

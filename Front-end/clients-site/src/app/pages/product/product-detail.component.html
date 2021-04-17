@@ -1,0 +1,179 @@
+<div class="body">
+  <div class="page-top-info">
+    <div class="container">
+      <h4>CHI TIẾT SẢN PHẨM</h4>
+      <div class="site-pagination">
+        <a id="header" [routerLink]="['/home']">Trang Chủ</a> /
+        <a id="header" [routerLink]="['/product']">Sản Phẩm</a> /
+        <a id="header">Chi Tiết Sản Phẩm</a>
+      </div>
+    </div>
+  </div>
+
+  <section class="product-section">
+    <div class="container">
+      <div class="back-link">
+        <a id="header" [routerLink]="['/product']"> &lt; Trở về sản phẩm</a>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="product-pic-zoom">
+            <img class="product-big-img" src="{{anProduct.avatar}}" width="530" height="680" alt="">
+          </div>
+          <div class="product-thumbs" tabindex="1" style="overflow: hidden; outline: none;">
+            <div class="product-thumbs-track" *ngFor="let row of images;">
+              <div class="pt" data-imgbigurl="{{row.url}}">
+                <img src="{{row.url}}" class="mr-2" width="100" height="130" alt="{{row.name}}">
+              </div>
+              <!-- <div class="pt" data-imgbigurl="img/single-product/2.jpg"><img src="img/single-product/thumb-2.jpg"
+                  alt="">
+              </div>
+              <div class="pt" data-imgbigurl="img/single-product/3.jpg"><img src="img/single-product/thumb-3.jpg"
+                  alt="">
+              </div>
+              <div class="pt" data-imgbigurl="img/single-product/4.jpg"><img src="img/single-product/thumb-4.jpg"
+                  alt="">
+              </div> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 product-details">
+          <h2 class="p-title">{{anProduct.name}}</h2>
+          <h3 class="p-price">{{anProduct.price | number}} Đ</h3>
+          <h4 class="p-stock">Có Sẵn |<span>Còn trong kho</span></h4>
+          <div class="p-rating">
+            <i class="fas fa-star text-warning font-smaller"></i>
+            <i class="fas fa-star text-warning font-smaller"></i>
+            <i class="fas fa-star text-warning font-smaller"></i>
+            <i class="fas fa-star text-warning font-smaller"></i>
+            <i class="fas fa-star-half-alt text-warning font-smaller"></i>
+          </div>
+          <div class="p-review">
+            <a href="">3 nhận xét</a>|<a href="">Thêm nhận xét</a>
+          </div>
+          <div class="fw-size-choose">
+            <p>Size</p>
+            <div class="sc-item">
+              <input type="radio" name="sc" id="s-size">
+              <label for="anProduct.size.name-size">{{anProduct.size.name}}</label>
+            </div>
+            <!-- <div class="sc-item">
+              <input type="radio" name="sc" id="m-size">
+              <label for="m-size">M</label>
+            </div>
+            <div class="sc-item">
+              <input type="radio" name="sc" id="l-size">
+              <label for="l-size">L</label>
+            </div>
+            
+            <div class="sc-item">
+              <input type="radio" name="sc" id="xl-size" checked="">
+              <label for="xl-size">XL</label>
+            </div>
+            <div class="sc-item">
+              <input type="radio" name="sc" id="xxl-size">
+              <label for="xxl-size">XXL</label>
+            </div> -->
+          </div>
+          <!-- <div class="quantity">
+          <p>Số Lượng</p>
+          <div class="pro-qty">
+            <i class="fas fa-minus"></i>
+              <input type="text" value="1">
+              <i class="fas fa-plus"></i>
+            </div>
+        </div> -->
+          <a href="#" class="site-btn" (click)="addCart($event, anProduct.code)">THÊM VÀO GIỎ</a>
+          <div id="accordion" class="accordion-area">
+            <div class="panel">
+              <div class="panel-header" id="headingOne">
+                <button class="panel-link active" (click)="check1()" aria-expanded="!isCollapsed1"
+                  aria-controls="collapseBasic" data-toggle="collapse" data-target="#collapse1">THÔNG TIN SẢN
+                  PHẨM</button>
+              </div>
+              <div id="collapseBasic" [collapse]="!isCollapsed1" [isAnimated]="true" class="collapse">
+                <div class="panel-body">
+                  <p>-<i> Sơ lược : </i>{{anProduct.description}}</p>
+                  <p>-<i> Loại mặt hàng : </i>{{anProduct.type.name}}</p>
+                  <p>-<i> Nhà sản xuất : </i>{{anProduct.producer.name}}</p>
+                  <!-- <p>Hàng mới nhập về shop - Số lượng có hạng</p>
+                  <p>Bền - Đẹp - Sang Chảnh</p>
+                  <p>Được nhà thiết kế nỗi tiếng châu Âu thiết kế - Rất nhiều màu để lựa chọn</p> -->
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header" id="headingTwo">
+                <button class="panel-link" (click)="check2()" aria-expanded="!isCollapsed2"
+                  aria-controls="collapseBasic" data-toggle="collapse">Xem Thông Tin Thẻ Tín Dụng </button>
+              </div>
+              <div id="collapseBasic" [collapse]="!isCollapsed2" [isAnimated]="true" class="collapse">
+                <div class="panel-body">
+                  <img src="assets/cards.png" alt="">
+                  <p>Bạn có thể thanh toán nhanh qua thẻ tín dụng Three Men hỗ trợ hầu hết tất cả loại thẻ tín dụng hot
+                    nhất hiện nay</p>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header" id="headingThree">
+                <button class="panel-link" (click)="check3()" aria-expanded="!isCollapsed3"
+                  aria-controls="collapseBasic" data-toggle="collapse">Giao Hàng & Trả Hàng</button>
+              </div>
+              <div id="collapseBasic" [collapse]="!isCollapsed3" [isAnimated]="true" class="collapse">
+                <div class="panel-body">
+                  <h4 style="font-weight: bold;">Giao Hàng</h4>
+                  <p>Ship Tận Nhà <br>Giao Tận Tay <span>3 - 4 Ngày</span></p>
+                  <p>Khách hàng sẽ nhận được hàng sau 3 -4 ngày Three Men sẽ ship tận nhà - Giao tận tay -Không nhầm lẫn
+                    -
+                    Có thể xem hàng trước</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="social-sharing">
+            <a href=""><i class="fab fa-google-plus-g"></i></a>
+            <a href=""><i class="fab fa-pinterest"></i></a>
+            <a href=""><i class="fab fa-facebook-f"></i></a>
+            <a href=""><i class="fab fa-twitter"></i></a>
+            <a href=""><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</div>
+<!-- <section class="related-product-section"> -->
+<div class="container related-product-section">
+  <div class="section-title">
+    <h2>SẢN PHẨM TƯƠNG TỰ</h2>
+  </div>
+  <div class="row">
+    <div class="col-lg-3 col-sm-6" *ngFor="let row of productsOfType;">
+      <div class="product-item">
+        <div class="pi-pic">
+          <img src="{{row.avatar}}" alt="" width="270" height="350">
+          <div class="pi-links mr-2">
+            <a class="add-card mr-1" (click)="addCart($event, row.code)">
+              <i class="fa fa-cart-arrow-down"></i>
+              <span>Thêm Vào
+                Giỏ</span>
+            </a>
+            <a href="#" class="wishlist-btn"><i class="far fa-heart text-danger"></i></a>
+          </div>
+        </div>
+        <div class="pi-text">
+          <h6>{{row.price | number}} Đ</h6>
+          <a class="product-detail" [routerLink]="['/product-detail', row.id]">
+            <p id="name" style="font-size: 18px;">{{row.name}}</p>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- </section> -->

@@ -1,0 +1,79 @@
+<div class="card border-danger">
+    <div class="card-header table-primary">
+      <span id="headerAddBook">Danh Sách Loại Hàng</span>
+    </div>
+    <div class="card-body">
+      <div class="my-2 mb-3 mr-0">
+        <div class="row">
+          <div class="col-6">
+          </div>
+          <div class="col-6">
+            <button class="btn btn-warning float-right" (click)="showEditModal($event ,0)" id="button"><i
+                class="fa fa-plus-circle"></i> Thêm mới</button>
+          </div>
+        </div>
+      </div>
+      <table class="table text-center table-hover table-md">
+        <thead class="table-primary text-center py-1">
+          <tr>
+            <th>No.</th>
+            <th>Tên loại hàng</th>
+            <th>Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="text-center" *ngFor="let row of types; let i = index">
+            <th>{{i+1}}</th>
+            <td>{{row.name}}</td>
+            <td>
+              <a href="" (click)="showEditModal($event , row.id)" class="text-success mr-1" title="Chỉnh sửa"><i
+                  class="fa fa-edit"></i></a>
+                  <a href="" class="text-danger" (click)="delete($event, row.id)" title="Xóa"><i class="fa fa-trash"></i></a>
+                  
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+   
+  </div>
+  <!-- bootstrap model -->
+  <div bsModal #editModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-child-name">
+    <div class="modal-dialog" style="width: 430px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 id="dialog-child-name" class="modal-title text-center">{{action}}</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="hideEditModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="frm">
+            <div class="form-row mb-2">
+              <div class="col-12">
+                <label class="text-center">Tên Loại Hàng<span class="text-danger">
+                    *</span></label>
+                <input type="text" class="form-control" formControlName="name" autocomplete="off"
+                  [(ngModel)]="anType.name" placeholder="Nhập tên nhà sản xuất" maxlength="100" [ngClass]="{
+                              'is-invalid' : frm.controls['name'].invalid && frm.controls['name'].touched,
+                              'is-valid' : frm.controls['name'].valid
+                              }">
+                <div *ngIf="frm.controls['name'].errors?.required" class="invalid-feedback">
+                  Vui lòng nhập tên!
+                </div>
+              </div>
+            </div>
+          </form>
+          <p class="float-right mr-2" style="font-size: 12px; font-weight: 400; color: black; font-style: italic;"><span
+              class="text-danger">*</span> không được phép bỏ trống.</p>
+        </div>
+        <div class="row mb-3 mr-1">
+          <div class="col-auto ml-auto">
+            <button type="submit" (click)="save()" [disabled]="frm.invalid" class="btn btn-success mr-2" id="button">Lưu</button>
+            <button type="submit" class="btn btn-secondary" (click)="hideEditModal()" id="button">Đóng</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

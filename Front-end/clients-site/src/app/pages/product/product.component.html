@@ -1,0 +1,210 @@
+<div class="body">
+<div class="page-top-info">
+    <div class="container">
+        <h4>SẢN PHẨM</h4>
+        <div class="site-pagination">
+            <a id="header"  [routerLink]="['/home']">Trang Chủ</a> /
+            <a id="header" [routerLink]="['/product']">Sản Phẩm</a>
+        </div>
+    </div>
+</div>
+<section class="category-section mt-4 pt-3 spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 order-2 order-lg-1 mt-3">
+                <div class="filter-widget">
+                </div>
+                <div class="filter-widget mb-0">
+                    <h2 class="fw-title">Tìm Kiếm Theo</h2>
+                    <div class="price-range-wrap">
+                        <h4>GIÁ</h4>
+                        <!-- <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget"
+                            data-min="10" data-max="270">
+                            <div class="ui-slider-range ui-corner-all ui-widget-header"
+                                style="left: 0%; width: 100%;"></div>
+                            <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"
+                                style="left: 0%;">
+                            </span>
+                            <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"
+                                style="left: 100%;">
+                            </span>
+                        </div>
+                        <div class="range-slider">
+                            <div class="price-input">
+                                <input type="text" id="minamount">
+                                <input type="text" id="maxamount">
+                            </div>
+                        </div> -->
+                        <select class="form-control">
+                            <option (click)="loadingProduct1()">----Tất cả-----</option>
+                            <option (click)="getMinMaxPrice(0, 100000)" >Dưới 100.000 VNĐ</option>
+                            <option (click)="getMinMaxPrice(100000, 300000)">Từ 100.000 - 300.000 VNĐ</option>
+                            <option (click)="getMinMaxPrice(300000, 500000)">Từ 300.000 - 500.000 VNĐ</option>
+                            <option (click)="getMinMaxPrice(500000, 100000000)">Trên 500.000 VNĐ</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- <div class="filter-widget mb-0">
+                    <h2 class="fw-title">Màu</h2>
+                    <div class="fw-color-choose">
+                         <div class="cs-item mt-0 pt-0">
+                            <input type="radio" name="cs" checked (click)="loadingProduct1()" >
+                            <label>All</label>
+                          </div> 
+                        <div class="cs-item" *ngFor="let row of colors;">
+                            <input type="radio" (click)=" getColor(row.id)" class="" name="cs" id="gray-color" checked>
+                            <label [style.background-color]="row.name">
+                                 <span>(3)</span>
+                            </label>
+                        </div> 
+                    </div>
+                </div> -->
+                <div class="filter-widget mb-0">
+                    <h2 class="fw-title">Kích Thước</h2>
+                    <div class="fw-size-choose">
+                        <div class="sc-item">
+                            <input type="radio" (click)="loadingProduct1()" name="sc" checked>
+                            <label for="all">All</label>
+                          </div>
+                      <div class="sc-item"  *ngFor="let row of sizes;">
+                        <input type="radio" (click)=" getSize(row.id)" name="sc" id="row.name">
+                        <label>{{row.name}}</label>
+                      </div>
+                    </div>
+                  </div>
+
+            </div>
+            <div class="col-lg-9  order-1 order-lg-2 mb-5 mt-5 mb-lg-0">
+                <div class="row">
+                    <div class="col-lg-4 col-sm-6" *ngFor="let row of products;">
+                        
+                        <div class="product-item">
+                            <div class="pi-pic">
+                                <img
+                                 src="{{row.avatar}}"
+                                  alt=""
+                                  width="270" 
+                                  height="350">
+                                <div class="pi-links">
+                                    <a class="add-card mr-1" (click)="addCart($event, row.code)">
+                                        <i class="fa fa-cart-arrow-down"></i>
+                                        <span>Thêm Vào
+                                            Giỏ</span>
+                                        </a>
+                                    <a href="#" class="wishlist-btn"><i class="far fa-heart text-danger"></i></a>
+                                </div>
+                            </div>
+                            <div class="pi-text">
+                                <h6>{{row.price | number}} Đ</h6>
+                                <a class="product-detail" [routerLink]="['/product-detail', row.id]">
+                                <p id="name" style="font-size: 18px;">{{row.name}}</p>
+                            </a>
+                            </div>
+                        </div>
+                    
+                    </div>
+                    <div class="text-center w-100 pt-3">
+                        <button class="site-btn sb-line sb-dark" (click)="addMove()">NHIỀU HƠN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- <section class="footer-section">
+    <div class="container">
+        <div class="footer-logo text-center">
+            <a href="index.html"><img src="./img/logo-light.png" alt=""></a>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-sm-6">
+                <div class="footer-widget about-widget">
+                    <h2>Thông Tin</h2>
+                    <p>Của hàng chỉnh của Three Men nằm tại Lô 14 Đường số 5 Công viên phần mềm Quang Trung Quận 12
+                        Thành Phố Hồ Chí Minh Chung trường Saigontech</p>
+                    <img src="img/cards.png" alt="">
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="footer-widget about-widget">
+                    <h2>Câu Hỏi</h2>
+                    <ul>
+                        <li><a href="">Thông Tin Chúng Tôi</a></li>
+                        <li><a href="">Theo Dõi Đơn Hàng</a></li>
+                        <li><a href="">Tiện Ích</a></li>
+                        <li><a href="">Tuyển Dụng Công Việc</a></li>
+                        <li><a href="">Mua Sắm, Trãi Nghiệm</a></li>
+                        <li><a href="">Truyện Về Ba Chàng Trai</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="footer-widget about-widget">
+                    <h2>Câu Hỏi</h2>
+                    <div class="fw-latest-post-widget">
+                        <div class="lp-item">
+                            <div class="lp-thumb set-bg" data-setbg="picture/37.1.jpg"></div>
+                            <div class="lp-content">
+                                <h6>Giày gì đang hot</h6>
+                                <span>20-9-2020</span>
+                                <a href="#" class="readmore">Xem Thêm</a>
+                            </div>
+                        </div>
+                        <div class="lp-item">
+                            <div class="lp-thumb set-bg" data-setbg="img/blog-thumbs/2.jpg"></div>
+                            <div class="lp-content">
+                                <h6>Giày cao hot năm nay</h6>
+                                <span>15-11-2020</span>
+                                <a href="#" class="readmore">Xem Thêm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="footer-widget contact-widget">
+                    <h2>Câu Hỏi</h2>
+                    <div class="con-info">
+                        <span>W.</span>
+                        <p>Cửa Hàng bạn ở đâu ?</p>
+                    </div>
+                    <div class="con-info">
+                        <span>A.</span>
+                        <p>Lô 14- Đường 5- khu Công viên PMQT-Quận 12-TP.HCM</p>
+                    </div>
+                    <div class="con-info">
+                        <span>P.</span>
+                        <p>+84869973927</p>
+                    </div>
+                    <div class="con-info">
+                        <span>E.</span>
+                        <p>threemenshopping@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="social-links-warp">
+        <div class="container">
+            <div class="social-links">
+                <a href="https://www.instagram.com/vu_mvt.2504/" class="instagram"><i
+                        class="fa fa-instagram"></i><span>instagram</span></a>
+                <a href="" class="google-plus"><i class="fa fa-google-plus"></i><span>g+plus</span></a>
+                <a href="" class="pinterest"><i class="fa fa-pinterest"></i><span>pinterest</span></a>
+                <a href="https://www.facebook.com/mvt.vu2504" class="facebook"><i
+                        class="fa fa-facebook"></i><span>facebook</span></a>
+                <a href="" class="twitter"><i class="fa fa-twitter"></i><span>twitter</span></a>
+                <a href="https://www.youtube.com/" class="youtube"><i
+                        class="fa fa-youtube"></i><span>youtube</span></a>
+                <a href="" class="tumblr"><i class="fa fa-tumblr-square"></i><span>tumblr</span></a>
+            </div>
+
+            <p class="text-white text-center mt-5">Copyright &copy;
+                <script>document.write(new Date().getFullYear());</script> Three Men Mua Sắm - Tiện Ích - Nhanh - Rẻ
+                <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com"
+                    target="_blank">Three Men</a></p>
+        </div>
+    </div>
+</section> -->
+</div>

@@ -1,0 +1,103 @@
+<!-- Page info -->
+<div class="page-top-info">
+  <div class="container">
+    <h4>Giỏ Hàng</h4>
+    <div class="site-pagination">
+      <a id="header" [routerLink]="['/home']">Trang Chủ</a> /
+      <a id="header" [routerLink]="['/cart']">Giỏ Hàng</a>
+    </div>
+  </div>
+</div>
+<!-- Page info end -->
+<!-- checkout section  -->
+<section class="checkout-section spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 order-2 order-lg-1">
+        <form class="checkout-form" [formGroup]="frm">
+          <div class="cf-title">Đơn Hàng</div>
+          <!-- <div *ngFor="let alert of alerts">
+							<alert [type]="alert.type" [dismissOnTimeout]="alert.timeout" (onClosed)="onClosed(alert)">{{ alert.msg }}</alert>
+						  </div> -->
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong><span style="color: red;">*</span>Thông Tin Thanh Toán</strong></p>
+            </div>
+          </div>
+          <div class="row address-inputs">
+            <div class="col-md-6">
+              <input type="text" formControlName="lastName" [ngClass]="{'is-invalid' : frm.controls['lastName'].invalid && frm.controls['lastName'].touched,
+								'is-valid' : frm.controls['lastName'].valid }" autocomplete="off" [(ngModel)]="anCustomer.lastName"
+                placeholder="Họ">
+              <div *ngIf="frm.controls['lastName'].errors?.required" class="invalid-feedback mt-0 pt-0 mb-2">
+                Vui lòng nhập họ của bạn !
+              </div>
+            </div>
+            <div class="col-md-6">
+              <input type="text" formControlName="firstName" [ngClass]="{'is-invalid' : frm.controls['firstName'].invalid && frm.controls['firstName'].touched,
+								'is-valid' : frm.controls['firstName'].valid }" autocomplete="off" [(ngModel)]="anCustomer.firstName"
+                placeholder="Tên">
+              <div *ngIf="frm.controls['firstName'].errors?.required" class="invalid-feedback mt-0 pt-0 mb-2">
+                Vui lòng nhập tên của bạn !
+              </div>
+            </div>
+            <div class="col-md-6">
+              <input type="text" formControlName="email" [ngClass]="{'is-invalid' : frm.controls['email'].invalid && frm.controls['email'].touched,
+								'is-valid' : frm.controls['email'].valid }" autocomplete="off" [(ngModel)]="anCustomer.email"
+                placeholder="Địa chỉ email">
+              <div *ngIf="frm.controls['email'].errors?.required" class="invalid-feedback mt-0 pt-0 mb-2">
+                Vui lòng nhập email của bạn !
+              </div>
+              <div *ngIf="frm.controls['email'].errors?.email" class="invalid-feedback">
+									Email không hợp lệ !
+								  </div>
+            </div>
+            <div class="col-md-6">
+              <input type="text" formControlName="phone" [ngClass]="{'is-invalid' : frm.controls['phone'].invalid && frm.controls['phone'].touched,
+								'is-valid' : frm.controls['phone'].valid }" autocomplete="off" [(ngModel)]="anCustomer.phone"
+                placeholder="Số điện thoại">
+              <div *ngIf="frm.controls['phone'].errors?.required" class="invalid-feedback mt-0 pt-0 mb-2">
+                Vui lòng nhập số điện thoại của bạn !
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <input type="text" name="address" autocomplete="off" [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="anCustomer.address" placeholder="Nơi ở">
+
+            </div>
+            <div class="col-md-12">
+              <input type="text" formControlName="deliveryAddress" [ngClass]="{'is-invalid' : frm.controls['deliveryAddress'].invalid && frm.controls['deliveryAddress'].touched,
+				'is-valid' : frm.controls['deliveryAddress'].valid }" autocomplete="off" [(ngModel)]="anBill.deliveryAddress"
+                placeholder="Địa chỉ giao hàng">
+              <div *ngIf="frm.controls['deliveryAddress'].errors?.required" class="invalid-feedback mt-0 pt-0 mb-2">
+                Vui lòng nhập địa chỉ giao hàng!
+              </div>
+            </div>
+          </div>
+        </form>
+        <button class="site-btn submit-order-btn mt-0" [disabled]="frm.invalid" (click)="save()">MUA HÀNG</button>
+      </div>
+      <div class="col-lg-4 order-1 order-lg-2">
+        <div class="checkout-cart">
+          <h3>Giỏ hàng của bạn</h3>
+          <ul class="product-list pl-0" *ngFor="let row of temp;">
+            <li>
+              <div class="pl-thumb">
+                <img src="{{row.product.avatar}}" width="90" height="100" alt="">
+              </div>
+              <h6>{{row.product.name}}</h6>
+              <p>giá : {{row.product.price | number}} Đ</p>
+              <p>số lượng : {{row.quantity}}</p>
+            </li>
+          </ul>
+          <ul class="price-list">
+            <li>Giao Hàng<span id="free">Miễn phí</span></li>
+            <li class="total">Tổng Giá<span>{{totalPrice | number}} VNĐ</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- checkout section end -->

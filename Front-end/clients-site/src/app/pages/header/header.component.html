@@ -1,0 +1,73 @@
+<header>
+  <div class="header-top">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-2 text-center text-lg-left">
+        <!-- logo -->
+        <a href="./index.html" class="site-logo mt-1">
+          <img id="img3" alt="" src="assets/logoshop2.png">
+        </a>
+      </div>
+      <div class="col-xl-6 col-lg-5">
+        <form class="header-search-form">
+          <input type="text" [(ngModel)]="name" (keyup.enter)="searchName()" name="name" autocomplete="off" placeholder="Tiềm kiếm tên sản phẩm ....">
+          <button><i class="fa fa-search" (click)="searchName()"></i></button>
+        </form>
+      </div>
+      <div class="col-xl-4 col-lg-5">
+        <div class="user-panel">
+          <div class="up-item mt-1">
+            <i class="fa fa-user-tie mr-1"></i> <a id="user-cart" [routerLink]="['/home']"> Đăng Nhập</a>
+          </div>
+          <div class="up-item mt-1">
+            <div class="shopping-card">
+              <i class="fa fa-cart-plus mr-2"></i>
+              <span class="badge badge-light">{{quantity}}</span>
+            </div>
+            <a id="user-cart" class="ml-2" [routerLink]="['/cart']">Giỏ Hàng</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <nav class="navbar navbar-expand-lg my-0 py-0">
+    <div class="container">
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav py-1">
+            <ul class="main-menu pb-2">
+                <li><a [routerLink]="['/home']">Trang Chủ</a></li>
+                <li><a   [routerLink]="['/gender', 'Nam']">Nam</a></li>
+                <li><a  [routerLink]="['/gender', 'Nu']">Nữ</a></li>			
+                <li>
+                  <a href="#">Mặt hàng</a>
+                  <ul class="sub-menu pt-0">
+                    <li *ngFor="let row of types;">
+                      <a [routerLink]="['/product-type' , row.id]">{{row.name}}</a>
+                      
+                    </li>
+                    <!-- <li><a href="#">Quần Ngắn</a></li>
+                    <li><a href="#">Quần dài</a></li>
+                    <li><a href="#">Áo sơ mi</a></li>
+                    <li><a href="#">Áo tay dài</a></li>
+                    <li><a href="#">Áo tay ngắn</a></li>
+                    <li><a href="#">Đầm</a></li>
+                    <li><a href="#">Váy</a></li>
+                    <li><a href="#">Vest</a></li> -->
+                </ul>
+                </li>
+                <li><a href="#">Danh mục</a>
+                                <ul class="sub-menu pt-0">
+                <li><a [routerLink]="['/product']" class="pt-1">Sản phẩm</a></li>
+                <li><a [routerLink]="['/cart']">Giỏ Hàng</a></li>
+                                    <li><a [routerLink]="['/checkout']">Đặt Hàng</a></li>
+                                </ul>
+                            </li>
+              </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+

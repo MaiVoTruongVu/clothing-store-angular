@@ -1,0 +1,50 @@
+#button {
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    border: none;
+  }
+  
+  #button:active {
+    transform: translateY(4px);
+  }
+  
+  .table td,
+  .table th {
+    padding: 10px;
+    margin: 0px;
+  }
+   #loai {
+    width: 160px;
+  }
+  #nsx {
+    width: 160px;
+  }
+  
+  #headerAddBook {
+    text-align: center;
+    font-size: 30px;
+    font-style: italic;
+    letter-spacing: 2px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  }
+  
+  .tab:hover {
+    background-color: red;
+  }
+  
+  .pagination a {
+    border-radius: 5px;
+    display: inline-block;
+  }
+  .header{
+    padding-bottom: 3px;
+    padding-top: 0px;
+  }
+  .buttonClose{
+    font-size: 17px;
+  }
+  .buttonClose:hover{
+    color: red;
+  }

@@ -1,0 +1,97 @@
+<div class="container">
+    <div class="row mt-2">
+      <div class="col-4">
+        <img class="float-right" src="./assets/img/logo/logo2.png" width="100" height="100">
+      </div>
+      <div class="col-6">
+        <label><span
+            style="font-size: 24px; font-weight: bold; letter-spacing: 1px; font-style: italic; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">QUẦN
+            ÁO
+            THREE MEN</span> <br>
+          &nbsp;&nbsp;&nbsp;Điện thoại Hotline: 1900 106 850 <br>
+          &nbsp;&nbsp;&nbsp;Website: threemenshopping@gmail.com <br>
+          &nbsp;&nbsp;&nbsp;Địa chỉ: Lô 14 Đường số 5 Công viên phần mềm <br> &nbsp;&nbsp;&nbsp;Quang Trung Quận 12
+          Thành Phố Hồ Chí Minh</label>
+        <br>
+      </div>
+    </div>
+    <hr width="300">
+    <div class="row mt-4">
+      <div class="col-2"></div>
+      <div class="col-7 pr-0">
+        <h1 class="pl-4" style="text-align: center; font-weight: bold;
+           letter-spacing: 2px; font-style: italic;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+          HÓA ĐƠN CHI TIẾT</h1>
+      </div>
+      <div class="col-3 pl-0">
+        <label style="font-size: 15px;" class="pt-1" *ngFor="let row of details; first as isFirst"><span
+            *ngIf="isFirst">Mã: <span class="text-danger font-weight-bold">{{row.bill.code}}</span></span></label>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-7">
+        <label *ngFor="let row of details; first as isFirst"><span *ngIf="isFirst">Họ tên khách hàng:
+            {{row.bill.customer.lastName}} {{row.bill.customer.firstName}}</span></label>
+      </div>
+      <div class="col-5">
+        <label *ngFor="let row of details; first as isFirst"><span *ngIf="isFirst">Điện thoại:
+            {{row.bill.customer.phone}}</span></label>
+      </div>
+      <div class="col-12">
+        <label *ngFor="let row of details; first as isFirst"><span *ngIf="isFirst">Địa chỉ giao:
+            {{row.bill.deliveryAddress}}</span></label>
+      </div>
+      <div class="col-12">
+        <label *ngFor="let row of details; first as isFirst"><span *ngIf="isFirst">Thời gian:
+            {{row.bill.createdDate | date:'dd/MM/yyyy hh:mma'}}</span></label>
+      </div>
+    </div>
+      <table class="table text-center table-hover table-bordered"  id="table-1">
+        <thead class=" text-center py-1 head">
+          <tr>
+            <th>No.</th>
+            <!-- <div>No.</div> -->
+            <th>Hình ảnh</th>
+            <!-- <div>Hình ảnh</div> -->
+            <th>Tên sản phẩm</th>
+            <!-- <div>Tên sản phẩm</div> -->
+            <th>Mã sản phẩm</th>
+            <!-- <div>Mã sản phẩm</div> -->
+            <th>Size</th>
+            <!-- <div>Size</div> -->
+            <th>Đơn giá</th>
+            <!-- <div>Đơn giá</div> -->
+            <th>SL</th>
+            <!-- <div>SL</div> -->
+            <th>Thành tiền</th>
+            <!-- <div>Thành tiền</div> -->
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr class="text-center" *ngFor="let row of details; index as i">
+            <th style="padding-top: 40px; padding-right: 7px;">{{i+1}}</th>
+            <td>
+              <img src="{{row.product.avatar}}" height="90" width="70" />
+            </td>
+            <td style="padding-top: 37px;">{{row.product.name}}</td>
+            <td style="padding-top: 37px;">{{row.product.code}}</td>
+            <td style="padding-top: 37px;">{{row.product.size.name}}</td>
+            <td style="padding-top: 37px;">{{row.product.price | number}}</td>
+            <td style="padding-top: 37px;">{{row.quantity}}</td>
+            <td style="padding-top: 37px;">{{row.quantity * row.product.price | number}}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="text-center">
+            <td colspan="5" style="font-style: italic;">TỔNG CỘNG:</td>
+            <td colspan="3">{{totalPrice | number}} VNĐ</td>
+          </tr>
+        </tfoot>
+      </table>
+    <!-- </div> -->
+    <!-- <div class="text-right">
+      <pagination-controls class="my-pagination" (pageChange)="page = $event" previousLabel="" nextLabel=""></pagination-controls>
+    </div> -->
+  </div>

@@ -1,0 +1,24 @@
+#headerAddBook {
+    text-align: center;
+    font-size: 30px;
+    font-style: italic;
+    letter-spacing: 2px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  }
+  
+  #button {
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    border: none;
+  }
+  
+  #button:active {
+    transform: translateY(4px);
+  }
+  
+  .table td,
+  .table th {
+    padding: 10px;
+  }

@@ -1,0 +1,324 @@
+<div class="card border-danger">
+  <div class="card-header table-primary">
+    <span id="headerAddBook">Danh Sách Khách Hàng</span>
+  </div>
+  <div class="card-body">
+    <div class="my-2 mb-3 mr-3">
+      <div class="row">
+        <div class="col-9">
+          <a class="text-dark" (click)="sortName($event)">
+            <div *ngIf="check">
+              <i class="fa fa-sort-alpha-asc pt-3 ml-1" style="font-size: 15px;"></i>
+            </div>
+            <div *ngIf="!check">
+              <i class="fa fa-sort-alpha-desc pt-3 ml-1" style="font-size: 15px;"></i>
+            </div>
+            </a>
+        </div>
+        <div class="col-3 ml-auto mr-0 pr-0">
+          <!-- <div class="row">
+            <div class="col-12"> -->
+          <input type="text" maxlength="100" autocomplete="off" class="form-control border border-warning"
+            [(ngModel)]="firstName" name="firstName" placeholder="Tìm kiếm tên khách hàng.." (keyup)="searchName()">
+          <!-- </div> -->
+          <!-- <button class="btn btn-warning col-2" (click)="searchName()" id="button"><i class="fa fa-search"></i></button> -->
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
+    <table class="table text-center table-hover">
+      <thead class="table-primary text-center py-1">
+        <tr>
+          <th>No.</th>
+          <th>Họ và tên</th>
+          <th>Số điện thoại</th>
+          <th>Email</th>
+          <th>Địa chỉ</th>
+          <th>Hóa đơn</th>
+          <th>Chi tiết</th>
+          <th>Xóa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of customers; let i = index" class="text-center">
+          <th>{{i+1}}</th>
+          <td style="text-align: left;">{{row.lastName}} {{row.firstName}}</td>
+          <td style="text-align: left;">{{row.phone}}</td>
+          <td style="text-align: left;">{{row.email}}</td>
+          <td id="address" style="text-align: left;">{{row.address}}</td>
+          <td>
+            <a style="color: darkorchid;" (click)="showBillModal($event,  row.id)"><i class="fa fa-map-o"></i></a>
+          </td>
+          <td>
+            <a (click)="showEditModal($event,  row.id)" class="text-success" title="Repair"><i
+                class="fa fa-eye"></i></a>
+          </td>
+          <td>
+            <a href="" class="text-danger" (click)="delete($event , row.id)" title="Delete"><i
+                class="fa fa-trash"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- bootstrap model -->
+<div bsModal #editModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-child-name">
+  <div class="modal-dialog" style="width: 430px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-child-name" class="modal-title text-center">Thông Tin</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideEditModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-row">
+            <label class="text-center ml-1">Họ và tên <span class="text-danger">
+                *</span></label>
+          </div>
+          <div class="form-row mb-2">
+            <div class="col-6">
+              <input type="text" disabled name="lastName" [(ngModel)]="anCustomer.lastName" class="form-control">
+            </div>
+            <div class="col-6">
+              <input type="text" disabled name="firstName" [(ngModel)]="anCustomer.firstName" class="form-control">
+            </div>
+          </div>
+          <div class="form-row">
+            <label class="text-center ml-1">Số điện thoại <span class="text-danger">
+                *</span></label>
+          </div>
+          <div class="form-row mb-2">
+            <div class="col-12">
+              <input type="text" disabled name="phone" [(ngModel)]="anCustomer.phone" class="form-control">
+            </div>
+          </div>
+          <div class="form-row">
+            <label class="text-center ml-1">Email <span class="text-danger">
+                *</span></label>
+          </div>
+          <div class="form-row mb-2">
+            <div class="col-12">
+              <input type="text" disabled name="email" [(ngModel)]="anCustomer.email" class="form-control">
+            </div>
+          </div>
+          <!-- <app-input [label]="'Số điện thoại'" [disabled]="'true'" [type]="'text'" [name]="'phone'">
+          </app-input>
+          <app-input [label]="'Email'" [disabled]="'true'" [type]="'text'" [name]="'email'">
+          </app-input> -->
+          <div class="form-row my-2">
+            <div class="col-12">
+              <label class="text-center ml-1">Địa chỉ <span class="text-danger">
+                  *</span></label>
+              <textarea rows="4" disabled="true" maxlength="50" [(ngModel)]="anCustomer.address" name="address"
+                autocomplete="off" class="form-control"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- bootstrap model -->
+<div bsModal #billModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-child-name">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header py-3">
+        <h4 id="dialog-child-name" class="modal-title text-center">Danh Sách Hóa Đơn</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideBillModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="card border-danger">
+        <div class="card-body">
+          <label *ngFor="let row of bills; first as isFirst"
+            style="font-weight: 500; font-size: 15px; font-style: italic;"><span *ngIf="isFirst">Họ và tên:
+              {{row.customer.lastName}}
+              {{row.customer.firstName}}</span></label> <br>
+          <label *ngFor="let row of bills; first as isFirst"
+            style="font-weight: 500; font-size: 15px; font-style: italic;"><span *ngIf="isFirst">Số điện thoại:
+              {{row.customer.phone}}</span></label> <br>
+          <label *ngFor="let row of bills; first as isFirst"
+            style="font-weight: 500; font-size: 15px; font-style: italic;"><span *ngIf="isFirst">Email:
+              {{row.customer.email}}</span></label>
+          <table class="table text-center table-hover">
+            <thead class="table-primary text-center py-1">
+              <tr>
+                <th>No.</th>
+                <th>Mã hóa đơn</th>
+                <th>Ngày xuất</th>
+                <th>Địa chỉ giao hàng</th>
+                <th>Chi tiết</th>
+                <th>Chỉnh sửa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of bills; let i = index" class="text-center">
+                <th (click)="showDetailModal($event , row.id)">{{i+1}}</th>
+                <td (click)="showDetailModal($event , row.id)">{{row.code}}</td>
+                <td (click)="showDetailModal($event , row.id)">{{row.createdDate | date:'dd/MM/yyyy hh:mma'}}</td>
+                <td id="address" (click)="showDetailModal($event , row.id)">{{row.deliveryAddress}}</td>
+                <td>
+                  <a class="text-warning" (click)="showDetailModal($event , row.id)"><i class="fa fa-info-circle"
+                      style="font-size: 17px;"></i></a>
+                </td>
+                <td>
+                  <a (click)="showEditBillModal($event,  row.id)" class="text-success" title="Repair"><i
+                      class="fa fa-edit"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- bootstrap model -->
+<div bsModal #detailModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-child-name">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="container">
+        <div class="row mt-1">
+          <div class="col-12">
+            <button type="button" class="close mr-auto" aria-label="Close" (click)="hideDetailModal()">
+              <span aria-hidden="true" class="">&times;</span>
+            </button>
+          </div>
+
+        </div>
+        <div class="row mt-1">
+          <div class="col-5">
+            <img class="float-right" src="./assets/img/logo/logo2.png" width="100" height="100">
+          </div>
+          <div class="col-6 pl-0">
+            <label><span
+                style="font-size: 24px; font-weight: bold; letter-spacing: 1px; font-style: italic; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">QUẦN
+                ÁO
+                THREE MEN</span> <br>
+              &nbsp;&nbsp;&nbsp;Điện thoại Hotline: 1900 106 850 <br>
+              &nbsp;&nbsp;&nbsp;Website: threemenshopping@gmail.com <br>
+              &nbsp;&nbsp;&nbsp;Địa chỉ: Lô 14 Đường số 5 Công viên phần mềm <br> &nbsp;&nbsp;&nbsp;Quang Trung Quận 12
+              Thành Phố Hồ Chí Minh</label>
+            <br>
+          </div>
+        </div>
+        <hr width="300">
+        <div class="row mt-2">
+          <div class="col-3"></div>
+          <div class="col-6 pr-0">
+            <h1 class="pl-4" style="text-align: center; font-weight: bold;
+               letter-spacing: 2px; font-style: italic;
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+              HÓA ĐƠN CHI TIẾT</h1>
+          </div>
+          <div class="col-3 pl-0">
+            <label style="font-size: 15px;" class="pt-3 float-right mr-3" *ngFor="let row of details; first as isFirst"><span
+                *ngIf="isFirst">Mã: <span class="text-danger font-weight-bold">{{row.bill.code}}</span></span></label>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12">
+            <label *ngFor="let row of details; first as isFirst"><span *ngIf="isFirst">Họ tên khách hàng:
+                {{row.bill.customer.lastName}} {{row.bill.customer.firstName}}</span></label>
+          </div>
+          <div class="col-7">
+            <label *ngFor="let row of details; first as isFirst"><span *ngIf="isFirst">Điện thoại:
+              {{row.bill.customer.phone}}</span></label>
+          </div>
+          <div class="col-5">
+            <label class="float-right mr-3" *ngFor="let row of details; first as isFirst"><span *ngIf="isFirst">Thời gian:
+              {{row.bill.createdDate | date:'dd/MM/yyyy hh:mma'}}</span></label>
+          </div>
+          <div class="col-12">
+            <label *ngFor="let row of details; first as isFirst"><span *ngIf="isFirst">Địa chỉ giao:
+                {{row.bill.deliveryAddress}}</span></label>
+          </div>
+        
+        </div>
+          <table class="table text-center table-hover table-bordered"  id="table-1">
+            <thead class=" text-center py-1 head">
+              <tr>
+                <th>No.</th>
+                <!-- <div>No.</div> -->
+                <th>Hình ảnh</th>
+                <!-- <div>Hình ảnh</div> -->
+                <th>Tên sản phẩm</th>
+                <!-- <div>Tên sản phẩm</div> -->
+                <th>Mã sản phẩm</th>
+                <!-- <div>Mã sản phẩm</div> -->
+                <th>Size</th>
+                <!-- <div>Size</div> -->
+                <th>Đơn giá</th>
+                <!-- <div>Đơn giá</div> -->
+                <th>SL</th>
+                <!-- <div>SL</div> -->
+                <th>Thành tiền</th>
+                <!-- <div>Thành tiền</div> -->
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr class="text-center" *ngFor="let row of details | paginate: {
+                itemsPerPage: count,
+                 currentPage: page}; index as i">
+                <th style="padding-top: 40px; padding-right: 7px;">{{i+1}}</th>
+                <td>
+                  <img src="{{row.product.avatar}}" height="90" width="70" />
+                </td>
+                <td style="padding-top: 37px; text-align: left;">{{row.product.name}}</td>
+                <td style="padding-top: 37px; text-align: left;">{{row.product.code}}</td>
+                <td style="padding-top: 37px; text-align: left;">{{row.product.size.name}}</td>
+                <td style="padding-top: 37px; text-align: right;">{{row.product.price | number}} Đ</td>
+                <td style="padding-top: 37px; text-align: right;">{{row.quantity}}</td>
+                <td style="padding-top: 37px; text-align: right;">{{row.quantity * row.product.price | number}} Đ</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="text-center">
+                <td colspan="5" style="font-style: italic;">TỔNG CỘNG:</td>
+                <td colspan="3" style="text-align: right;">{{totalPrice | number}} VNĐ</td>
+              </tr>
+            </tfoot>
+          </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- bootstrap model -->
+<div bsModal #editBillModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="dialog-child-name">
+  <div class="modal-dialog" style="width: 430px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-child-name" class="modal-title text-center">Chỉnh sửa hóa đơn</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideEditBillModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-row mb-2">
+            <div class="col-12">
+              <label class="text-center">Địa chỉ giao khác <span class="text-danger">
+                  *</span></label>
+              <input type="text" class="form-control" name="deliveryAddress" autocomplete="off"
+                [(ngModel)]="anBill.deliveryAddress" placeholder="Nhập địa chỉ bạn muốn giao" maxlength="200">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="row mb-3 mr-1">
+        <div class="col-auto ml-auto">
+          <button type="submit" (click)="saveBill()" class="btn btn-success mr-2" id="button">Lưu</button>
+          <button type="submit" class="btn btn-secondary" (click)="hideEditBillModal()" id="button">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
